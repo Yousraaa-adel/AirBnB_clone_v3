@@ -77,4 +77,14 @@ class DBStorage:
 
     def get(self, cls, id):
         """ """
+        instances = self.all(cls)
+        for key, value in instances.items():
+            key = key.split(".")
+            if key[1] == id:
+                return value
+        return None
         
+    def count(self, cls=None):
+        """"""
+        instances = self.all(cls) # 
+        return len(instances)
