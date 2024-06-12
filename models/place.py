@@ -35,8 +35,8 @@ class Place(BaseModel, Base):
         longitude = Column(Float, nullable=True)
         reviews = relationship("Review", backref="place")
         amenities = relationship("Amenity", secondary="place_amenity",
-                                 backref="place_amenities",
-                                 viewonly=False)
+                                backref="place_amenities",
+                                viewonly=False)
     else:
         city_id = ""
         user_id = ""
@@ -68,11 +68,25 @@ class Place(BaseModel, Base):
 
         @property
         def amenities(self):
-            """getter attribute returns the list of Amenity instances"""
+            """getter function for amenity attribute"""
+            result = []
             from models.amenity import Amenity
-            amenity_list = []
-            all_amenities = models.storage.all(Amenity)
-            for amenity in all_amenities.values():
-                if amenity.place_id == self.id:
-                    amenity_list.append(amenity)
-            return amenity_list
+            classes = {
+            "Amenity": Amenity
+            }
+            temp = classes['Amenity']
+            for a in models.storage.all(temp).values():
+                if a in self.amenity_ids:
+                    result.append(a)
+            return result
+
+        @amenities.setter
+        def amenities(self, obj):
+            """ Setter for amenities """
+            from models.amenity import Amenity
+            classes = {
+            "Amenity": Amenity
+            }
+            temp_class = classes['Amenity']
+            if (isinstance(obj, temp_class)):
+                self.amenity_ids.append(obj.id)
