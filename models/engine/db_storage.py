@@ -49,6 +49,7 @@ class DBStorage:
                 for obj in objs:
                     key = obj.__class__.__name__ + '.' + obj.id
                     new_dict[key] = obj
+        # print("xoxo\n\n\n")
         return (new_dict)
 
     def new(self, obj):
@@ -77,4 +78,14 @@ class DBStorage:
 
     def get(self, cls, id):
         """ """
+        instances = self.all(cls)
+        for key, value in instances.items():
+            key = key.split(".")
+            if key[1] == id:
+                return value
+        return None
         
+    def count(self, cls=None):
+        """"""
+        instances = self.all(cls) # 
+        return len(instances)

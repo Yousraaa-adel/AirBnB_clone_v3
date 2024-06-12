@@ -72,7 +72,8 @@ class FileStorage:
     def get(self, cls, id):
         """ Returns object (dict) """
         for key, value in self.__objects.items():
-            if key == cls + "." + id:
+            key = key.split(".")
+            if key[1] == id:
                 return value
             else:
                 return None
