@@ -20,7 +20,21 @@ def get_status():
 
 @app_views.route("/stats", methods=["GET"])
 def get_stats():
-    # classes = [Amenity, User, City, Review, State, Place]
+    
+    amenities = storage.count(Amenity)
+    cities = storage.count(City)
+    places = storage.count(Place)
+    reviwes = storage.count(Review)
+    states = storage.count(State)
+    users = storage.count(User)
+
+    return jsonify({"amenities": amenities,
+            "cities": cities,
+            "places": places,
+            "reviews": reviwes,
+            "states": states,
+            "users": users})
+# classes = [Amenity, User, City, Review, State, Place]
     # strings = ["amenities", "users", "cities", "reviwes", "states", "places"]
 
     # classes = {"amenities": Amenity, "cities": City,
@@ -30,16 +44,3 @@ def get_stats():
     # for key, value in classes.items():
     #     x = storage.count(value)
     #     dict1[key] = x
-    amenities = storage.count(Amenity)
-    cities = storage.count(City)
-    places = storage.count(Place)
-    reviwes = storage.count(Review)
-    states = storage.count(State)
-    users = storage.count(User)
-
-    return {"amenities": amenities,
-            "cities": cities,
-            "places": places,
-            "reviews": reviwes,
-            "states": states,
-            "users": users}
