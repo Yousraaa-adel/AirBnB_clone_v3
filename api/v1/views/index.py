@@ -15,11 +15,11 @@ from models import storage
 
 @app_views.route("/status", methods=["GET"])
 def get_status():
-    return {"status": "OK"}
+    return jsonify({"status": "OK"})
 
 
-@app_views.route("/stats", methods=["GET"])
-def get_stats():
+@app_views.route("/stats",strict_slashes=False, methods=["GET"])
+def stats():
     
     amenities = storage.count(Amenity)
     cities = storage.count(City)
