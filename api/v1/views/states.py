@@ -7,7 +7,7 @@ from api.v1.views import app_views
 from flask import jsonify, abort, request
 
 
-@app_views.route("/states")
+@app_views.route("/states/")
 def all_states():
     states = storage.all(State)
     states_list = []
@@ -37,41 +37,55 @@ def delets_state(state_id):
     return jsonify({}), 200
 
 
-@app_views.post("/states/")
+@app_views.route("/states", strict_slashes=False, methods=["POST"])
 def create_state():
-    data = request.get_json()
+    try:
+        data = request.get_json()
 
-    if not data:
+        if not request.is_json:
+            abort(400, description="Not a JSON")
+
+        if not data:
+            abort(400, description="Not a JSON")
+
+        if "name" not in data:
+            abort(400, description="Missing name")
+
+        instance = State(**data)
+        instance.save()
+        return jsonify(instance.to_dict()), 201
+
+    except Exception as e:
         abort(400, description="Not a JSON")
-
-    if "name" not in data:
-        abort(400, description="Missing name")
-
-    instance = State(**data)
-    instance.save()
-    return jsonify(instance.to_dict()), 201
 
 
 @app_views.route("/states/<state_id>", methods=["PUT"])
 def update_state(state_id):
-    state = storage.get(State, state_id)
-    ignore = ["id", "created_at", "updated_at"]
+    try:
+        state = storage.get(State, state_id)
+        ignore = ["id", "created_at", "updated_at"]
 
-    if not state:
-        abort(404)
+        if not state:
+            abort(404)
 
-    data = request.get_json()
+        data = request.get_json()
 
-    if not data:
+        if not request.is_json:
+            abort(400, description="Not a JSON")
+
+        if not data:
+            abort(400, description="Not a JSON")
+
+        for key, value in data.items():
+            if key not in ignore:
+                setattr(state, key, value)
+
+        storage.save()
+        return jsonify(state.to_dict()), 200
+
+    except Exception as e:
         abort(400, description="Not a JSON")
 
-    for key, value in data.items():
-        if key not in ignore:
-            setattr(state, key, value)
-
-    storage.save()
-    return jsonify(state.to_dict()), 200
 
 
-
-# curl -X PUT http://0.0.0.0:5000/api/v1/states/c2ab70ab-1389-41b5-adc1-9e0e2112c60a -H "Content-Type: application/json" -d '{"name": "California is so cool"}'
+# curl -X PUT http://0.0.0.0:5000/api/v1/states/c2ab70ab-1389-41b5-adc1-9e0e2112c60a -H "Content-Type: application/json" -d '{"name": "Texas is so cool"}'
