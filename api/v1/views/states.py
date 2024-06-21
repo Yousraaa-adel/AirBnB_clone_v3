@@ -85,7 +85,3 @@ def update_state(state_id):
 
     except Exception as e:
         abort(400, description="Not a JSON")
-
-
-
-# curl -X PUT http://0.0.0.0:5000/api/v1/states/c2ab70ab-1389-41b5-adc1-9e0e2112c60a -H "Content-Type: application/json" -d '{"name": "Texas is so cool"}'
