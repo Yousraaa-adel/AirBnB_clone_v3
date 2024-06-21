@@ -61,13 +61,13 @@ def create_state():
 
 @app_views.route("/states/<state_id>", methods=["PUT"])
 def update_state(state_id):
+    state = storage.get(State, state_id)
+    ignore = ["id", "created_at", "updated_at"]
+
+    if not state:
+        abort(404)
+
     try:
-        state = storage.get(State, state_id)
-        ignore = ["id", "created_at", "updated_at"]
-
-        if not state:
-            abort(404)
-
         data = request.get_json()
 
         if not request.is_json:
