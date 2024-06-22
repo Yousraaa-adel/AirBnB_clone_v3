@@ -20,8 +20,7 @@ def get_all_cities():
     return jsonify(list_cities)
 
 
-
-@app_views.route("/states/<state_id>/cities", strict_slashes=False, methods=["GET"])
+@app_views.route("/states/<state_id>/cities", strict_slashes=False)
 def get_sepcific_cities(state_id):
     """Get All Cities realted to Specific State"""
 
@@ -31,9 +30,8 @@ def get_sepcific_cities(state_id):
         abort(404)
     for city in state.cities:
         list_cities.append(city.to_dict())
-    
+
     return jsonify(list_cities)
-     
 
 
 @app_views.route("/cities/<city_id>", strict_slashes=False, methods=["GET"])
@@ -60,7 +58,8 @@ def del_city(city_id):
     return jsonify({}), 200
 
 
-@app_views.route("/states/<state_id>/cities", strict_slashes=False, methods=["POST"])
+@app_views.route("/states/<state_id>/cities",
+                 strict_slashes=False, methods=["POST"])
 def create_city(state_id):
     """Create a new city object"""
 
