@@ -85,8 +85,8 @@ def update_city(city_id):
     """Update a city object"""
 
     city = storage.get(City, city_id)
-    data = data = request.get_json()
-    ignore = ["id", "email", "created_at", "updated_at"]
+    data = request.get_json()
+    ignore = ["id", "state_id", "created_at", "updated_at"]
 
     if not city:
         abort(404)
