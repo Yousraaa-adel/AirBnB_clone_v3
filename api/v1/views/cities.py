@@ -34,7 +34,7 @@ def get_sepcific_cities(state_id):
     return jsonify(list_cities)
 
 
-@app_views.route("/cities/<city_id>", strict_slashes=False, methods=["GET"])
+@app_views.route("/cities/<city_id>/", strict_slashes=False, methods=["GET"])
 def get_city(city_id):
     """Get a city object by ID"""
 
@@ -42,6 +42,7 @@ def get_city(city_id):
 
     if not city:
         abort(404)
+
     return jsonify(city.to_dict())
 
 
