@@ -68,8 +68,8 @@ class HBNBCommand(cmd.Cmd):
             return False
         print(instance.id)
         instance.save()
-        # x = models.storage.count("Place")
-        # print(x)
+        x = models.storage.count("Place")
+        print(x)
 
     def do_show(self, arg):
         """Prints an instance as a string based on the class and id"""
