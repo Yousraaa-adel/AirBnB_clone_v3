@@ -12,34 +12,20 @@ from models.amenity import Amenity
 from models import storage
 
 
-@app_views.route("/status", methods=["GET"])
+@app_views.route("/status", methods=["GET"], strict_slashes=False)
 def get_status():
+    """ Status of API """
     return jsonify({"status": "OK"})
 
 
-@app_views.route("/stats",strict_slashes=False, methods=["GET"])
+@app_views.route("/stats",methods=["GET"], strict_slashes=False)
 def stats():
-    
-    amenities = storage.count(Amenity)
-    cities = storage.count(City)
-    places = storage.count(Place)
-    reviwes = storage.count(Review)
-    states = storage.count(State)
-    users = storage.count(User)
+    """ Retrieves the number of each objects by type """
+    classes = [Amenity, User, City, Review, State, Place]
+    strings = ["amenities", "users", "cities", "reviwes", "states", "places"]
+    dict1 = {}
 
-    return jsonify({"amenities": amenities,
-            "cities": cities,
-            "places": places,
-            "reviews": reviwes,
-            "states": states,
-            "users": users})
-# classes = [Amenity, User, City, Review, State, Place]
-    # strings = ["amenities", "users", "cities", "reviwes", "states", "places"]
+    for i in range(len(classes)):
+        dict1[strings[i]] = storage.count(classes[i])
 
-    # classes = {"amenities": Amenity, "cities": City,
-    #     "places": Place, "reviwes": Review, "states": State, "users": User}
-    # dict1 = {}
-
-    # for key, value in classes.items():
-    #     x = storage.count(value)
-    #     dict1[key] = x
+    return jsonify(dict1)
