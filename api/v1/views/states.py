@@ -8,7 +8,6 @@ from flask import jsonify, abort, request
 from models.user import User
 
 
-
 @app_views.route("/states/")
 def all_states():
     states = storage.all(State)
@@ -71,9 +70,6 @@ def update_state(state_id):
 
     try:
         data = request.get_json()
-
-        if not request.is_json:
-            abort(400, description="Not a JSON")
 
         if not data:
             abort(400, description="Not a JSON")
